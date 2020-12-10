@@ -1,0 +1,6 @@
+.Tilt{
+background: #EF5D5D;
+background: -webkit-linear-gradient(top left, #EF5D5D, #4248DD);
+background: -moz-linear-gradient(top left, #EF5D5D, #4248DD);
+background: linear-gradient(to bottom right, #EF5D5D, #4248DD);
+}

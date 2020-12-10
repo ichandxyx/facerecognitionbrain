@@ -1,5 +1,13 @@
 body{
 		height: 100vh;
-	   background: linear-gradient(to bottom, #1d38eb, #7432ed, #a52aee, #ce1eec, #f20ee8);
-	   
+		font-family: "courier new", courier,monospace;
+background: #EF5D5D;
+
+background: -webkit-linear-gradient(top left, #EF5D5D, #4248DD);
+background: -moz-linear-gradient(top left, #EF5D5D, #4248DD);
+background: linear-gradient(to bottom right, #EF5D5D, #4248DD);	
+}
+
+button {
+	cursor :pointer;
 }
