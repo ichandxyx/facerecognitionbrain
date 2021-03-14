@@ -31,10 +31,26 @@ class App extends Component {
       imageUrl:'',
       box: {},
       route:'signin',
-      isSignedIn:false
+      isSignedIn:false,
+      user:{
+        id:'',
+        name:'',
+        email:'',
+        entries:0,
+        joined:''
+      }
     }
   }
 
+loadUser=(data)=>{
+  this.setState({user:{
+    id:data.id,
+    name:data.name,
+    emai:data.email,
+    entries:data.entries,
+    joined:data.joined
+  }})
+}
 FaceLocation=(data)=>{
   const clarifaiFace=data.outputs[0].data.regions[0].region_info.bounding_box;
   const image=document.getElementById('inputimage');
@@ -65,9 +81,27 @@ FaceLocation=(data)=>{
         Clarifai.FACE_DETECT_MODEL ,
         this.state.input
       )
-    .then(response => this.displayFaceBox(this.FaceLocation(response)))
+    .then(response => {
+      console.log(this.state.user.id);
+      if(response){
+        fetch('http://localhost:3000/image',{
+          method:'put',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            id:this.state.user.id
+
+          })
+        })
+        .then(response=>response.json())
+        .then(count=>{
+             this.setState(Object.assign(this.state.user, { entries: count}))
+        })
+      }
+      this.displayFaceBox(this.FaceLocation(response))
+    })
     .catch(err=> console.log(err));
-  }
+  
+}
   onRouteChange=(route)=>{
     if(route==='signout'){
       this.setState({isSignedIn:false})
@@ -79,7 +113,7 @@ FaceLocation=(data)=>{
   }
 
   render(){
-    const {isSignedIn, imageUrl, route, box}= this.state;
+    const {isSignedIn, imageUrl, route, box,name,entries}= this.state;
   return (
     <div className="App">
         {/*<Particles className='particles'
@@ -90,7 +124,7 @@ FaceLocation=(data)=>{
         { route==='home'
           ? <div>
               <Logo/>
-              <Rank/>
+              <Rank name={name} entries={entries}/>
               <ImageLinkForm 
                onInputChange={this.onInputChange}
                onButtonSubmit={this.onButtonSubmit}
@@ -99,8 +133,8 @@ FaceLocation=(data)=>{
             </div>
           : (
             route==='signin'
-            ?<Signin onRouteChange={this.onRouteChange}/>
-            :<Register onRouteChange={this.onRouteChange}/>
+            ?<Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+            :<Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
             )
           
           
