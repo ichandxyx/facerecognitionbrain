@@ -2,10 +2,15 @@ import React from 'react';
 
 
 const Rank=({name,entries})=>{
+	//console.log(name);
 	return(
 		<div >
+		<div className='white f3'>
+			
+		{name}
+		</div>
 			<div className='white f3'>
-				{'Chandan, your entry count is....'}
+				your entry count is....'
 			</div>
 			<div className='white f4'>
 				{entries}
@@ -13,4 +18,4 @@ const Rank=({name,entries})=>{
 		</div>
 		);
 }
-export default Rank;
+export default Rank
